@@ -10,7 +10,11 @@ public class MovingPlatfrom : MonoBehaviour
     private float _speed = 1f;
     bool _moveTarget1to2;
     bool _moveTarget2to1;
-    void Update()
+    void FixedUpdate()
+    {
+        MoveObjectOneToTwoAndReverse();
+    }
+    void MoveObjectOneToTwoAndReverse()
     {
         if (this.transform.position == _movingTarget1.position)
         {
@@ -31,6 +35,21 @@ public class MovingPlatfrom : MonoBehaviour
         else if (_moveTarget2to1)
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, _movingTarget1.position, Time.deltaTime * _speed);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag.CompareTo("Player")== 0)
+        {
+            other.transform.SetParent(this.transform);
+        }
+    }
+  
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag.CompareTo("Player") == 0)
+        {
+            other.transform.SetParent(null);
         }
     }
 }
